@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized(); // यह लाइन जोड़ दी गई है
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -13,27 +13,27 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AnimatedSplashScreen(),
+      home: const AnimatedSplashScreen(),
     );
   }
 }
 
 // ==========================
-// 1. Splash Screen
+// 1. Splash Screen with Professional Branding Logo
 // ==========================
 class AnimatedSplashScreen extends StatefulWidget {
   const AnimatedSplashScreen({super.key});
 
   @override
-  _AnimatedSplashScreenState createState() => _AnimatedSplashScreenState();
+  State<AnimatedSplashScreen> createState() => _AnimatedSplashScreenState();
 }
 
 class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 2), () {
-      if (!mounted) return; // यह क्रैश होने से बचाएगा
+    Timer(const Duration(seconds: 3), () {
+      if (!mounted) return;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const MainHomeScreen()),
@@ -44,26 +44,53 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepPurple,
+      backgroundColor: const Color(0xFF0F2027),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.bolt, size: 100, color: Colors.amber),
-            const SizedBox(height: 20),
+            Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: const LinearGradient(
+                  colors: [Colors.cyan, Colors.blueAccent],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.cyan.withOpacity(0.6),
+                    blurRadius: 20,
+                    spreadRadius: 5,
+                  ),
+                ],
+              ),
+              child: const Icon(
+                Icons.security_rounded,
+                size: 70,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 25),
             const Text(
               "LinkApp Store",
               style: TextStyle(
-                fontSize: 40,
+                fontSize: 36,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
-                letterSpacing: 2.0,
+                letterSpacing: 1.5,
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
             const Text(
-              "By Govind Kumar Beragi",
-              style: TextStyle(fontSize: 16, color: Colors.white70),
+              "Trusted & Secure Shopping",
+              style: TextStyle(fontSize: 14, color: Colors.cyanAccent),
+            ),
+            const SizedBox(height: 40),
+            const CircularProgressIndicator(
+              color: Colors.cyanAccent,
             ),
           ],
         ),
@@ -73,13 +100,13 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> {
 }
 
 // ==========================
-// 2. Main Home Screen with Cart & Heavy COD Charges
+// 2. Main Home Screen
 // ==========================
 class MainHomeScreen extends StatefulWidget {
   const MainHomeScreen({super.key});
 
   @override
-  _MainHomeScreenState createState() => _MainHomeScreenState();
+  State<MainHomeScreen> createState() => _MainHomeScreenState();
 }
 
 class _MainHomeScreenState extends State<MainHomeScreen> {
@@ -87,7 +114,6 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   String currentUsername = "Govind";
   List<String> cartItems = [];
 
-  // मोबाइल नंबर से लॉगिन करने का डायलॉग बॉक्स
   void _showMobileLoginDialog(BuildContext context) {
     TextEditingController phoneController = TextEditingController();
 
@@ -117,7 +143,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
               onPressed: () {
                 if (phoneController.text.isNotEmpty) {
                   setState(() {
-                    currentUsername = "+91 " + phoneController.text;
+                    currentUsername = "+91 ${phoneController.text}";
                   });
                   Navigator.of(context).pop();
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -132,7 +158,6 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     );
   }
 
-  // पेमेंट का नया पेज / डायलॉग (जहाँ COD पर एक्स्ट्रा चार्ज लगेगा)
   void _showPaymentDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -180,7 +205,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
 
   void _orderSuccessMessage(String paymentType) {
     setState(() {
-      cartItems.clear(); // ऑर्डर होते ही कार्ट खाली हो जाएगी
+      cartItems.clear();
     });
     showDialog(
       context: context,
@@ -209,157 +234,152 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> pages = [
-      // होम टैब
-      ListView(
-        children: [
-          Container(
-            color: Colors.blue[800],
-            padding: const EdgeInsets.all(10),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
+    final Widget homeTab = ListView(
+      children: [
+        Container(
+          color: Colors.blue[800],
+          padding: const EdgeInsets.all(10),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const TextField(
+              decoration: InputDecoration(
+                icon: Icon(Icons.search, color: Colors.grey),
+                hintText: "Search for Products, Brands and More",
+                border: InputBorder.none,
               ),
-              child: const TextField(
-                decoration: InputDecoration(
-                  icon: Icon(Icons.search, color: Colors.grey),
-                  hintText: "Search for Products, Brands and More",
-                  border: InputBorder.none,
+            ),
+          ),
+        ),
+        Container(
+          height: 90,
+          color: Colors.white,
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              _buildCategoryItem(Icons.phone_android, "Mobiles"),
+              _buildCategoryItem(Icons.checkroom, "Fashion"),
+              _buildCategoryItem(Icons.tv, "Electronics"),
+              _buildCategoryItem(Icons.home, "Home"),
+              _buildCategoryItem(Icons.sports_esports, "Gaming"),
+              _buildCategoryItem(Icons.book, "Books"),
+            ],
+          ),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 10),
+          height: 160,
+          decoration: BoxDecoration(
+            color: Colors.deepOrangeAccent,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("BIG BILLION DAYS", style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 5),
+                const Text("Up to 80% Off on Everything!", style: TextStyle(color: Colors.white70, fontSize: 16)),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
+                  onPressed: () {},
+                  child: const Text("Explore Now", style: TextStyle(color: Colors.deepOrangeAccent, fontWeight: FontWeight.bold)),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.0),
+          child: Text("Suggested for You", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
+        const SizedBox(height: 8),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: GridView.count(
+            crossAxisCount: 2,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            childAspectRatio: 0.70,
+            mainAxisSpacing: 8,
+            crossAxisSpacing: 8,
+            children: [
+              _buildProductCard("Smart Watch", "₹1,999", Colors.blue[100]!),
+              _buildProductCard("Wireless Earbuds", "₹999", Colors.purple[100]!),
+              _buildProductCard("Running Shoes", "₹2,499", Colors.orange[100]!),
+              _buildProductCard("Bluetooth Speaker", "₹1,499", Colors.green[100]!),
+            ],
+          ),
+        ),
+        const SizedBox(height: 20),
+      ],
+    );
+
+    final Widget cartTab = cartItems.isEmpty
+        ? const Center(child: Text("Your Cart is Empty!", style: TextStyle(fontSize: 18, color: Colors.grey)))
+        : Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: cartItems.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: Icon(Icons.shopping_bag, color: Colors.blue[800]),
+                      title: Text(cartItems[index]),
+                      subtitle: const Text("In your cart"),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.red),
+                        onPressed: () {
+                          setState(() {
+                            cartItems.removeAt(index);
+                          });
+                        },
+                      ),
+                    );
+                  },
                 ),
               ),
-            ),
-          ),
-          Container(
-            height: 90,
-            color: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                _buildCategoryItem(Icons.phone_android, "Mobiles"),
-                _buildCategoryItem(Icons.checkroom, "Fashion"),
-                _buildCategoryItem(Icons.tv, "Electronics"),
-                _buildCategoryItem(Icons.home, "Home"),
-                _buildCategoryItem(Icons.sports_esports, "Gaming"),
-                _buildCategoryItem(Icons.book, "Books"),
-              ],
-            ),
-          ),
-          const SizedBox(height: 8),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10),
-            height: 160,
-            decoration: BoxDecoration(
-              color: Colors.deepOrangeAccent,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("BIG BILLION DAYS", style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 5),
-                  const Text("Up to 80% Off on Everything!", style: TextStyle(color: Colors.white70, fontSize: 16)),
-                  const SizedBox(height: 10),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
-                    onPressed: () {},
-                    child: const Text("Explore Now", style: TextStyle(color: Colors.deepOrangeAccent, fontWeight: FontWeight.bold)),
+              Container(
+                padding: const EdgeInsets.all(16),
+                color: Colors.white,
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 45,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.green[700]),
+                    onPressed: () => _showPaymentDialog(context),
+                    child: const Text("Proceed to Payment", style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold)),
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
+            ],
+          );
+
+    final Widget profileTab = Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.account_circle, size: 100, color: Colors.blue[800]),
           const SizedBox(height: 10),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
-            child: Text("Suggested for You", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          ),
-          const SizedBox(height: 8),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: GridView.count(
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              childAspectRatio: 0.70,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
-              children: [
-                _buildProductCard("Smart Watch", "₹1,999", Colors.blue[100]!),
-                _buildProductCard("Wireless Earbuds", "₹999", Colors.purple[100]!),
-                _buildProductCard("Running Shoes", "₹2,499", Colors.orange[100]!),
-                _buildProductCard("Bluetooth Speaker", "₹1,499", Colors.green[100]!),
-              ],
-            ),
-          ),
+          Text("Logged in as: $currentUsername", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           const SizedBox(height: 20),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.blue[800]),
+            onPressed: () => _showMobileLoginDialog(context),
+            child: const Text("Change / Login Mobile Number", style: TextStyle(color: Colors.white)),
+          ),
         ],
       ),
+    );
 
-      // कार्ट टैब (Cart Page)
-      Scaffold(
-        body: cartItems.isEmpty
-            ? const Center(child: Text("Your Cart is Empty!", style: TextStyle(fontSize: 18, color: Colors.grey)))
-            : Column(
-                children: [
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: cartItems.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          leading: Icon(Icons.shopping_bag, color: Colors.blue[800]),
-                          title: Text(cartItems[index]),
-                          subtitle: const Text("In your cart"),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed: () {
-                              setState(() {
-                                cartItems.removeAt(index);
-                              });
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    color: Colors.white,
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 45,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(backgroundColor: Colors.green[700]),
-                        onPressed: () => _showPaymentDialog(context),
-                        child: const Text("Proceed to Payment", style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold)),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-      ),
-
-      // प्रोफाइल टैब (Profile Page)
-      Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.account_circle, size: 100, color: Colors.blue[800]),
-            const SizedBox(height: 10),
-            Text("Logged in as: $currentUsername", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue[800]),
-              onPressed: () => _showMobileLoginDialog(context),
-              child: const Text("Change / Login Mobile Number", style: TextStyle(color: Colors.white)),
-            ),
-          ],
-        ),
-      ),
-    ];
+    final List<Widget> pages = [homeTab, cartTab, profileTab];
 
     return Scaffold(
       backgroundColor: Colors.grey[200],
@@ -493,4 +513,3 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     );
   }
 }
-
