@@ -81,7 +81,7 @@ class TestLoginScreen extends StatelessWidget {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  style: ElevatedButton.mainStyle ?? ElevatedButton.styleFrom(
+                  style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -103,3 +103,4 @@ class TestLoginScreen extends StatelessWidget {
     );
   }
 }
+
