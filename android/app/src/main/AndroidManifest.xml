@@ -2,9 +2,7 @@
     package="com.example.linkappstore">
     <application
         android:label="LinkApp Store"
-        android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher">
+        android:name="${applicationName}">
         <activity
             android:name=".MainActivity"
             android:exported="true"
