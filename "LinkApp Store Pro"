@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.linkappstore">
+    package="com.govind.linkapppro">
     <application
-        android:label="LinkApp Store"
+        android:label="LinkApp Store Pro"
         android:name="${applicationName}">
         <activity
             android:name=".MainActivity"
