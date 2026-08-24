@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized(); // यह लाइन जोड़ दी गई है
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,7 +18,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// ==========================
+// 1. Splash Screen
+// ==========================
 class AnimatedSplashScreen extends StatefulWidget {
+  const AnimatedSplashScreen({super.key});
+
   @override
   _AnimatedSplashScreenState createState() => _AnimatedSplashScreenState();
 }
@@ -25,13 +32,12 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 2), () {
-      if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => MainHomeScreen()),
-        );
-      }
+    Timer(const Duration(seconds: 2), () {
+      if (!mounted) return; // यह क्रैश होने से बचाएगा
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const MainHomeScreen()),
+      );
     });
   }
 
@@ -43,9 +49,9 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.bolt, size: 100, color: Colors.amber),
-            SizedBox(height: 20),
-            Text(
+            const Icon(Icons.bolt, size: 100, color: Colors.amber),
+            const SizedBox(height: 20),
+            const Text(
               "LinkApp Store",
               style: TextStyle(
                 fontSize: 40,
@@ -54,8 +60,8 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> {
                 letterSpacing: 2.0,
               ),
             ),
-            SizedBox(height: 10),
-            Text(
+            const SizedBox(height: 10),
+            const Text(
               "By Govind Kumar Beragi",
               style: TextStyle(fontSize: 16, color: Colors.white70),
             ),
@@ -66,7 +72,12 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> {
   }
 }
 
+// ==========================
+// 2. Main Home Screen with Cart & Heavy COD Charges
+// ==========================
 class MainHomeScreen extends StatefulWidget {
+  const MainHomeScreen({super.key});
+
   @override
   _MainHomeScreenState createState() => _MainHomeScreenState();
 }
@@ -76,6 +87,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   String currentUsername = "Govind";
   List<String> cartItems = [];
 
+  // मोबाइल नंबर से लॉगिन करने का डायलॉग बॉक्स
   void _showMobileLoginDialog(BuildContext context) {
     TextEditingController phoneController = TextEditingController();
 
@@ -83,12 +95,12 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Login with Mobile Number"),
+          title: const Text("Login with Mobile Number"),
           content: TextField(
             controller: phoneController,
             keyboardType: TextInputType.phone,
             maxLength: 10,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Enter 10-digit mobile number',
               border: OutlineInputBorder(),
               prefixIcon: Icon(Icons.phone),
@@ -96,12 +108,12 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
           ),
           actions: [
             TextButton(
-              child: Text("Cancel"),
+              child: const Text("Cancel"),
               onPressed: () => Navigator.of(context).pop(),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue[800]),
-              child: Text("Login", style: TextStyle(color: Colors.white)),
+              child: const Text("Login", style: TextStyle(color: Colors.white)),
               onPressed: () {
                 if (phoneController.text.isNotEmpty) {
                   setState(() {
@@ -109,7 +121,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                   });
                   Navigator.of(context).pop();
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Successfully Logged In!")),
+                    const SnackBar(content: Text("Successfully Logged In!")),
                   );
                 }
               },
@@ -120,39 +132,40 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     );
   }
 
+  // पेमेंट का नया पेज / डायलॉग (जहाँ COD पर एक्स्ट्रा चार्ज लगेगा)
   void _showPaymentDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Select Payment Method"),
+          title: const Text("Select Payment Method"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                leading: Icon(Icons.account_balance_wallet, color: Colors.blue),
-                title: Text("UPI / Google Pay / PhonePe"),
-                subtitle: Text("Zero Extra Charges (Free)", style: TextStyle(color: Colors.green, fontSize: 12)),
+                leading: const Icon(Icons.account_balance_wallet, color: Colors.blue),
+                title: const Text("UPI / Google Pay / PhonePe"),
+                subtitle: const Text("Zero Extra Charges (Free)", style: TextStyle(color: Colors.green, fontSize: 12)),
                 onTap: () {
                   Navigator.of(context).pop();
                   _orderSuccessMessage("Paid via UPI (No extra charge)");
                 },
               ),
-              Divider(),
+              const Divider(),
               ListTile(
-                leading: Icon(Icons.credit_card, color: Colors.orange),
-                title: Text("Credit / Debit Card"),
-                subtitle: Text("Zero Extra Charges (Free)", style: TextStyle(color: Colors.green, fontSize: 12)),
+                leading: const Icon(Icons.credit_card, color: Colors.orange),
+                title: const Text("Credit / Debit Card"),
+                subtitle: const Text("Zero Extra Charges (Free)", style: TextStyle(color: Colors.green, fontSize: 12)),
                 onTap: () {
                   Navigator.of(context).pop();
                   _orderSuccessMessage("Paid via Card (No extra charge)");
                 },
               ),
-              Divider(),
+              const Divider(),
               ListTile(
-                leading: Icon(Icons.money, color: Colors.red),
-                title: Text("Cash on Delivery (COD)"),
-                subtitle: Text("Extra COD Handling Charge: +₹49", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 12)),
+                leading: const Icon(Icons.money, color: Colors.red),
+                title: const Text("Cash on Delivery (COD)"),
+                subtitle: const Text("Extra COD Handling Charge: +₹49", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 12)),
                 onTap: () {
                   Navigator.of(context).pop();
                   _orderSuccessMessage("Ordered with COD (₹49 Extra Charged)");
@@ -167,17 +180,17 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
 
   void _orderSuccessMessage(String paymentType) {
     setState(() {
-      cartItems.clear();
+      cartItems.clear(); // ऑर्डर होते ही कार्ट खाली हो जाएगी
     });
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Order Successful! 🎉"),
+        title: const Text("Order Successful! 🎉"),
         content: Text("Thank you for shopping with LinkApp Store.\n\nMode: $paymentType\nYour order has been placed successfully."),
         actions: [
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-            child: Text("OK", style: TextStyle(color: Colors.white)),
+            child: const Text("OK", style: TextStyle(color: Colors.white)),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ],
@@ -197,18 +210,19 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> pages = [
+      // होम टैब
       ListView(
         children: [
           Container(
             color: Colors.blue[800],
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: TextField(
+              child: const TextField(
                 decoration: InputDecoration(
                   icon: Icon(Icons.search, color: Colors.grey),
                   hintText: "Search for Products, Brands and More",
@@ -220,7 +234,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
           Container(
             height: 90,
             color: Colors.white,
-            padding: EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.symmetric(vertical: 10),
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
@@ -233,9 +247,9 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
               ],
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 10),
             height: 160,
             decoration: BoxDecoration(
               color: Colors.deepOrangeAccent,
@@ -245,31 +259,31 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("BIG BILLION DAYS", style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 5),
-                  Text("Up to 80% Off on Everything!", style: TextStyle(color: Colors.white70, fontSize: 16)),
-                  SizedBox(height: 10),
+                  const Text("BIG BILLION DAYS", style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 5),
+                  const Text("Up to 80% Off on Everything!", style: TextStyle(color: Colors.white70, fontSize: 16)),
+                  const SizedBox(height: 10),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
                     onPressed: () {},
-                    child: Text("Explore Now", style: TextStyle(color: Colors.deepOrangeAccent, fontWeight: FontWeight.bold)),
+                    child: const Text("Explore Now", style: TextStyle(color: Colors.deepOrangeAccent, fontWeight: FontWeight.bold)),
                   ),
                 ],
               ),
             ),
           ),
-          SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          const SizedBox(height: 10),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.0),
             child: Text("Suggested for You", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: GridView.count(
               crossAxisCount: 2,
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               childAspectRatio: 0.70,
               mainAxisSpacing: 8,
               crossAxisSpacing: 8,
@@ -281,12 +295,14 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
               ],
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
         ],
       ),
+
+      // कार्ट टैब (Cart Page)
       Scaffold(
         body: cartItems.isEmpty
-            ? Center(child: Text("Your Cart is Empty!", style: TextStyle(fontSize: 18, color: Colors.grey)))
+            ? const Center(child: Text("Your Cart is Empty!", style: TextStyle(fontSize: 18, color: Colors.grey)))
             : Column(
                 children: [
                   Expanded(
@@ -296,9 +312,9 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                         return ListTile(
                           leading: Icon(Icons.shopping_bag, color: Colors.blue[800]),
                           title: Text(cartItems[index]),
-                          subtitle: Text("In your cart"),
+                          subtitle: const Text("In your cart"),
                           trailing: IconButton(
-                            icon: Icon(Icons.delete, color: Colors.red),
+                            icon: const Icon(Icons.delete, color: Colors.red),
                             onPressed: () {
                               setState(() {
                                 cartItems.removeAt(index);
@@ -310,7 +326,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     color: Colors.white,
                     child: SizedBox(
                       width: double.infinity,
@@ -318,25 +334,27 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(backgroundColor: Colors.green[700]),
                         onPressed: () => _showPaymentDialog(context),
-                        child: Text("Proceed to Payment", style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold)),
+                        child: const Text("Proceed to Payment", style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ),
                 ],
               ),
       ),
+
+      // प्रोफाइल टैब (Profile Page)
       Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.account_circle, size: 100, color: Colors.blue[800]),
-            SizedBox(height: 10),
-            Text("Logged in as: $currentUsername", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            SizedBox(height: 20),
+            const SizedBox(height: 10),
+            Text("Logged in as: $currentUsername", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue[800]),
               onPressed: () => _showMobileLoginDialog(context),
-              child: Text("Change / Login Mobile Number", style: TextStyle(color: Colors.white)),
+              child: const Text("Change / Login Mobile Number", style: TextStyle(color: Colors.white)),
             ),
           ],
         ),
@@ -350,16 +368,16 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("LinkApp Store", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
-            Text("Welcome, $currentUsername", style: TextStyle(fontSize: 12, color: Colors.yellowAccent)),
+            const Text("LinkApp Store", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+            Text("Welcome, $currentUsername", style: const TextStyle(fontSize: 12, color: Colors.yellowAccent)),
           ],
         ),
         actions: [
-          IconButton(icon: Icon(Icons.notifications, color: Colors.white), onPressed: () {}),
+          IconButton(icon: const Icon(Icons.notifications, color: Colors.white), onPressed: () {}),
           Stack(
             children: [
               IconButton(
-                icon: Icon(Icons.shopping_cart, color: Colors.white),
+                icon: const Icon(Icons.shopping_cart, color: Colors.white),
                 onPressed: () {
                   setState(() {
                     _currentIndex = 1;
@@ -371,12 +389,12 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                   right: 8,
                   top: 8,
                   child: Container(
-                    padding: EdgeInsets.all(2),
-                    decoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-                    constraints: BoxConstraints(minWidth: 16, minHeight: 16),
+                    padding: const EdgeInsets.all(2),
+                    decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                    constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
                     child: Text(
                       '${cartItems.length}',
-                      style: TextStyle(color: Colors.white, fontSize: 10),
+                      style: const TextStyle(color: Colors.white, fontSize: 10),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -384,7 +402,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
             ],
           ),
           IconButton(
-            icon: Icon(Icons.account_circle, color: Colors.white, size: 28),
+            icon: const Icon(Icons.account_circle, color: Colors.white, size: 28),
             onPressed: () => _showMobileLoginDialog(context),
           ),
         ],
@@ -399,7 +417,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
             _currentIndex = index;
           });
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: "Cart"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
@@ -418,8 +436,8 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
             backgroundColor: Colors.blue[50],
             child: Icon(icon, color: Colors.blue[800]),
           ),
-          SizedBox(height: 4),
-          Text(title, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+          const SizedBox(height: 4),
+          Text(title, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
         ],
       ),
     );
@@ -439,9 +457,9 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
             child: Container(
               decoration: BoxDecoration(
                 color: bgColor,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
               ),
-              child: Center(child: Icon(Icons.shopping_bag, size: 50, color: Colors.black54)),
+              child: const Center(child: Icon(Icons.shopping_bag, size: 50, color: Colors.black54)),
             ),
           ),
           Padding(
@@ -449,12 +467,12 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-                SizedBox(height: 2),
+                Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                const SizedBox(height: 2),
                 Text(price, style: TextStyle(color: Colors.green[700], fontWeight: FontWeight.bold, fontSize: 14)),
-                SizedBox(height: 2),
-                Text("Min. 50% Off", style: TextStyle(color: Colors.red, fontSize: 11)),
-                SizedBox(height: 6),
+                const SizedBox(height: 2),
+                const Text("Min. 50% Off", style: TextStyle(color: Colors.red, fontSize: 11)),
+                const SizedBox(height: 6),
                 SizedBox(
                   width: double.infinity,
                   height: 28,
@@ -464,7 +482,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                       padding: EdgeInsets.zero,
                     ),
                     onPressed: () => addToCart(name),
-                    child: Text("Add to Cart", style: TextStyle(fontSize: 12, color: Colors.white)),
+                    child: const Text("Add to Cart", style: TextStyle(fontSize: 12, color: Colors.white)),
                   ),
                 ),
               ],
