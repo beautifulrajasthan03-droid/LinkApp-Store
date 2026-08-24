@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace "com.example.linkappstore"
+    "com.govind.linkapppro" "com.example.linkappstore"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
@@ -19,7 +19,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.linkappstore"
+        "com.govind.linkapppro" "com.example.linkappstore"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode 1
