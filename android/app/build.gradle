@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    "com.govind.linkapppro" "com.example.linkappstore"
+    namespace "com.govind.linkapppro"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
@@ -19,7 +19,7 @@ android {
     }
 
     defaultConfig {
-        "com.govind.linkapppro" "com.example.linkappstore"
+        applicationId "com.govind.linkapppro"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode 1
@@ -36,3 +36,4 @@ android {
 flutter {
     source "../.."
 }
+
