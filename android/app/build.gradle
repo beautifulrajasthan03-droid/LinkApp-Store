@@ -22,8 +22,8 @@ android {
         applicationId "com.example.linkappstore"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
-        versionCode flutter.versionCode.toInteger()
-        versionName flutter.versionName
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
     }
 
     buildTypes {
