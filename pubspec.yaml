@@ -1,5 +1,5 @@
 name: link_app_store
-description: "A new Flutter shopping app project."
+description: A new Flutter shopping app project.
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -15,7 +15,16 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  # 👇 Yahan hai ICON ki coding, jo naye APK mein logo set karegi
+  flutter_launcher_icons: ^0.13.1
+
+# 👇 Yeh hai Icon ka setup, jo assets/logo.png ko uthayega
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/logo.png"
+  # adaptive_icon_background: "#512DA8" # Optional: Aap splash screen ka purple color bhi de sakte hain
 
 flutter:
   uses-material-design: true
-  
+
