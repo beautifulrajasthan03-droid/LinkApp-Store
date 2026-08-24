@@ -15,9 +15,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// ==========================
-// 1. Splash Screen
-// ==========================
 class AnimatedSplashScreen extends StatefulWidget {
   @override
   _AnimatedSplashScreenState createState() => _AnimatedSplashScreenState();
@@ -66,9 +63,6 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> {
   }
 }
 
-// ==========================
-// 2. Main Home Screen with Cart & Heavy COD Charges
-// ==========================
 class MainHomeScreen extends StatefulWidget {
   @override
   _MainHomeScreenState createState() => _MainHomeScreenState();
@@ -79,7 +73,6 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   String currentUsername = "Govind";
   List<String> cartItems = [];
 
-  // मोबाइल नंबर से लॉगिन करने का डायलॉग बॉक्स
   void _showMobileLoginDialog(BuildContext context) {
     TextEditingController phoneController = TextEditingController();
 
@@ -124,7 +117,6 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     );
   }
 
-  // पेमेंट का नया पेज / डायलॉग (जहाँ COD पर एक्स्ट्रा चार्ज लगेगा)
   void _showPaymentDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -172,7 +164,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
 
   void _orderSuccessMessage(String paymentType) {
     setState(() {
-      cartItems.clear(); // ऑर्डर होते ही कार्ट खाली हो जाएगी
+      cartItems.clear();
     });
     showDialog(
       context: context,
@@ -202,7 +194,6 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> pages = [
-      // होम टैब
       ListView(
         children: [
           Container(
@@ -290,8 +281,6 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
           SizedBox(height: 20),
         ],
       ),
-
-      // कार्ट टैब (Cart Page)
       Scaffold(
         body: cartItems.isEmpty
             ? Center(child: Text("Your Cart is Empty!", style: TextStyle(fontSize: 18, color: Colors.grey)))
@@ -333,8 +322,6 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                 ],
               ),
       ),
-
-      // प्रोफाइल टैब (Profile Page)
       Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -485,3 +472,4 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     );
   }
 }
+
