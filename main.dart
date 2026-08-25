@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized(); // यह लाइन सफेद स्क्रीन और क्रैश को रोकती है
   runApp(const MyApp());
 }
 
@@ -103,4 +104,5 @@ class TestLoginScreen extends StatelessWidget {
     );
   }
 }
+
 
